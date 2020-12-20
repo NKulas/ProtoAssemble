@@ -1,2 +1,2 @@
 # ProtoAssemble
-Build network protocols
+This project is designed to make it easy to build the protocol data units for network protocols. The PDU is represented by an object and the appropriate properties are populated. The Assemble function then abstracts the process of formatting the data to meet the requirements of the protocol. Dissasembling protocol data back to objects is also a future goal.
