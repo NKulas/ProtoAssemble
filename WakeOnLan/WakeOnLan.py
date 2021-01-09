@@ -1,9 +1,9 @@
 import string
 
-class WakOnLan():
+class WakeOnLan():
     def __init__(self):
         self.MacAddress = None
-        #self.Password = None
+        self.Password = None
     
     def Validate(self):
         if not isinstance(self.MacAddress, str):
@@ -19,6 +19,14 @@ class WakOnLan():
             return False
         
         self.MacAddress = newMac
+
+        if self.Password != None:
+            if not isinstance(self.Password, str):
+                return False
+
+            if not (len(self.Password) == 8 or len(self.Password) == 12):
+                return False
+        
         return True
     
     def Assemble(self):
@@ -35,6 +43,9 @@ class WakOnLan():
         while j < (16):
             pdu += bytes.fromhex(self.MacAddress)
             j += 1
+        
+        if self.Password != None:
+            pdu += bytes.fromhex(self.Password)
         
         return pdu
     

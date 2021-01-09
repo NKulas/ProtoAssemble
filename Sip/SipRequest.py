@@ -60,48 +60,48 @@ class SipRequest():
         return True
 
     def Assemble(self):
-        packet = ""
+        pdu = ""
 
         #Request line
         requestLine = self.Method.value + " sip:" + self.FinalDestinationExtension
         if self.FinalDestinationDomain != None:
             requestLine += "@" + self.FinalDestinationDomain
         requestLine += " " + self.Version + "/r/n"
-        packet += requestLine
+        pdu += requestLine
 
         #Via headers
         for via in self.Via:
-           packet += via.Assemble() + "\r\n"
+           pdu += via.Assemble() + "\r\n"
         
         #From header
-        packet += self.From.Assemble()
+        pdu += self.From.Assemble()
 
         #To header
-        packet += self.To.Assemble()
+        pdu += self.To.Assemble()
 
         #Contact header
-        packet += self.Contact.Assemble()
+        pdu += self.Contact.Assemble()
         
         #Call id header
-        packet += "Call-ID: " + self.CallId + "\r\n"
+        pdu += "Call-ID: " + self.CallId + "\r\n"
         #Cseq header
-        packet += "CSeq: " + str(self.SequenceNumber) + " " + self.Method.value + "\r\n"
+        pdu += "CSeq: " + str(self.SequenceNumber) + " " + self.Method.value + "\r\n"
 
         #Content length header
-        packet += "Content-Length: " + str(self.ContentLength) + "\r\n"
+        pdu += "Content-Length: " + str(self.ContentLength) + "\r\n"
         #Max forewards header
-        packet += "Max-Forwards: " + str(self.MaxForwards) + "\r\n"
+        pdu += "Max-Forwards: " + str(self.MaxForwards) + "\r\n"
         #Content type header
-        packet += "Content-Type: " + self.ContentType.value + "\r\n"
+        pdu += "Content-Type: " + self.ContentType.value + "\r\n"
 
         #User agent header
         if self.UserAgent != None:
-            packet += "User-Agent: " + self.UserAgent + "\r\n"
+            pdu += "User-Agent: " + self.UserAgent + "\r\n"
         
-        packet += "\r\n"
+        pdu += "\r\n"
 
-        return packet
+        return pdu
 
-    def Disassemble(self, packet):
+    def Disassemble(self, pdu):
         pass
         #Not implemented yet
