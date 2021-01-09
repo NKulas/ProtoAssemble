@@ -1,0 +1,5 @@
+Headers I have verified meet the requirements of rfc 3261:
+
+RequestLine
+From
+To
