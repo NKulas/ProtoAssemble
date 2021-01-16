@@ -3,3 +3,7 @@ Headers I have verified meet the requirements of rfc 3261:
 RequestLine
 From
 To
+Call-Id
+CSeq
+Max-Forwards
+User-Agent

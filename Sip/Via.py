@@ -12,4 +12,4 @@ class Via():
         #Not implemented yet
 
     def Assemble(self):
-        return "Via: " + self.ProtocolName + "/" + self.Version + "/" + self.TransportType.value + " " + self.IpAddress + ":" + self.Port + ";branch=" + self.BranchId
+        return "Via: " + self.ProtocolName + "/" + self.Version + "/" + self.TransportType.value + " " + self.IpAddress + ":" + self.Port + ";branch=" + self.BranchId + "\r\n"

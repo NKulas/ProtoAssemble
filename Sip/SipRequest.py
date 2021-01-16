@@ -56,7 +56,27 @@ class SipRequest():
         #Contact
         if not self.Contact.Validate():
             return False
+
+        #Call id
+        if not isinstance(self.CallId, str):
+            return False
         
+        #Sequence
+        if not isinstance(self.SequenceNumber, int):
+            return False
+        
+        #Max forwards
+        if not isinstance(self.MaxForwards, int):
+            return False
+
+        if not (self.MaxForwards >= 0 and self.MaxForwards <= 255):
+            return False
+        
+        #User agent
+        if self.UserAgent != None:
+            if not isinstance(self.UserAgent, str):
+                return False
+
         return True
 
     def Assemble(self):
@@ -66,12 +86,12 @@ class SipRequest():
         requestLine = self.Method.value + " sip:" + self.FinalDestinationExtension
         if self.FinalDestinationDomain != None:
             requestLine += "@" + self.FinalDestinationDomain
-        requestLine += " " + self.Version + "/r/n"
+        requestLine += " " + self.Version + "\r\n"
         pdu += requestLine
 
         #Via headers
         for via in self.Via:
-           pdu += via.Assemble() + "\r\n"
+           pdu += via.Assemble()
         
         #From header
         pdu += self.From.Assemble()
@@ -84,24 +104,45 @@ class SipRequest():
         
         #Call id header
         pdu += "Call-ID: " + self.CallId + "\r\n"
+
         #Cseq header
         pdu += "CSeq: " + str(self.SequenceNumber) + " " + self.Method.value + "\r\n"
 
-        #Content length header
-        pdu += "Content-Length: " + str(self.ContentLength) + "\r\n"
-        #Max forewards header
+        #Max forwards header
         pdu += "Max-Forwards: " + str(self.MaxForwards) + "\r\n"
-        #Content type header
-        pdu += "Content-Type: " + self.ContentType.value + "\r\n"
 
         #User agent header
         if self.UserAgent != None:
             pdu += "User-Agent: " + self.UserAgent + "\r\n"
+
+        #Content length header
+        pdu += "Content-Length: " + str(self.ContentLength) + "\r\n"
+        
+        #Content type header
+        pdu += "Content-Type: " + self.ContentType.value + "\r\n"
         
         pdu += "\r\n"
 
         return pdu
 
     def Disassemble(self, pdu):
-        pass
-        #Not implemented yet
+        head, body = pdu.split("\r\n\r\n")
+        self.Content = body
+
+        requestLine = True
+        for header in head.split("\r\n"):
+            if requestLine:
+                self.Method, uri, self.Version = header.split(" ")
+                uri = uri.strip("sip:")
+
+                if "@" in uri:
+                    self.FinalDestinationExtension, self.FinalDestinationDomain = uri.split("@")
+                else:
+                    self.FinalDestinationExtension = uri
+                
+                requestLine = False
+            else:
+                key, value = header.split(":", 1)
+                key = str.strip(key)
+                value = str.strip(value)
+                #Implementation not completed
