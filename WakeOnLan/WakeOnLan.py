@@ -50,5 +50,17 @@ class WakeOnLan():
         return pdu
     
     def Dissasemble(self, pdu):
-        pass
-    #Not implemented yet
+        macBytes = bytearray()
+        i = 6
+        while i < 12:
+            macBytes.append(pdu[i])
+            i += 1
+        self.MacAddress = macBytes.hex()
+
+        passwordBytes = bytearray()
+        j = 102
+        while j < len(pdu):
+            passwordBytes.append(pdu[j])
+            j += 1
+        if (len(passwordBytes) > 0):
+            self.Password = passwordBytes.hex()

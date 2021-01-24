@@ -4,24 +4,24 @@ Headers listed in rfc3261 and implementation status:
 ->Accept encoding (for body content encoding) - possible, future
 ->Accept-Language - possible, future
 ->Alert-Info - will implement
-->Allow (for sip methods) - will implement
+*->Allow (for sip methods) - will implement
 ->Authentication-Info - possible, future
 ->Authorization (sent in request) - will implement
--->Call-Id - required, implemented
+*->Call-Id - required, implemented
 ->Call-Info - will implement, future
--->Contact - required, implemented
+*->Contact - required, implemented
 ->Content-Disposition - not planned
 ->Content-Encoding - will implement, future
 ->Content-Language - will implement
--->Content-Length - required, implemented
--->Content-Type - required if body, implemented
--->CSeq - required, implemented
+*->Content-Length - required, implemented
+*->Content-Type - required if body, implemented
+*->CSeq - required, implemented
 ->Date - will implement
 ->Error-Info - not planned
-->Expires - will implement, future
--->From - required, implemented
+*->Expires - implemented
+*->From - required, implemented
 ->In-Reply-To - not planned
--->Max-Forwards - required, implemented
+*->Max-Forwards - required, implemented
 ->Min-Expires - not planned
 ->MIME-Version - possible, future
 ->Organization - possible, future
@@ -35,7 +35,7 @@ Headers listed in rfc3261 and implementation status:
 ->Retry-After - possible, future
 ->Route - not planned
 ->Server - not planned
-->Subject - Will implement
+*->Subject - implemented
 ->Supported (for sip extension headers) - not planned
 ->Timestamp - possible, future
 -->To - required, implemented
@@ -44,4 +44,4 @@ Headers listed in rfc3261 and implementation status:
 ->Via - required, partially implemented
 ->Warning - not planned
 ->WWW-Authenticate (sent in response) - will implement
--->Request line - required, implemented
+*->Request line - required, implemented

@@ -21,6 +21,9 @@ class SipRequest():
         self.SequenceNumber = None
         self.MaxForwards = None
         self.UserAgent = None
+        self.Allow = []
+        self.Subject = None
+        self.Expires = None
 
         self.ContentType = None
         self.ContentLength = None
@@ -76,6 +79,33 @@ class SipRequest():
         if self.UserAgent != None:
             if not isinstance(self.UserAgent, str):
                 return False
+        
+        #Allow
+        if len(self.Allow) > 0:
+            for method in self.Allow:
+                if not isinstance(method, Method):
+                    return False
+        
+        #Subject
+        if self.Subject != None:
+            if not isinstance(self.Subject, str):
+                return False
+        
+        #Expires
+        if self.Expires != None:
+            if not isinstance(self.Expires, int):
+                return False
+            
+            if not (self.Expires >= 0 and self.Expires <= (pow(2, 32)-1)):
+                return False
+        
+        #Content
+        if (self.Content != None):
+            if self.ContentLength != len(self.Content):
+                return False
+        else:
+            if self.ContentLength != 0:
+                return False
 
         return True
 
@@ -115,6 +145,27 @@ class SipRequest():
         if self.UserAgent != None:
             pdu += "User-Agent: " + self.UserAgent + "\r\n"
 
+        #Allow header
+        if len(self.Allow) > 0:
+            allow = "Allow: "
+            first = True
+
+            for method in self.Allow:
+                if first:
+                    first = False
+                else:
+                    allow += ", "
+                allow += method.value
+            pdu += allow + "\r\n"
+        
+        #Subject header
+        if self.Subject != None:
+            pdu += "Subject: " + self.Subject + "\r\n"
+
+        #Expires header
+        if self.Expires != None:
+            pdu += "Expires: " + str(self.Expires) + "\r\n"
+
         #Content length header
         pdu += "Content-Length: " + str(self.ContentLength) + "\r\n"
         
@@ -122,6 +173,9 @@ class SipRequest():
         pdu += "Content-Type: " + self.ContentType.value + "\r\n"
         
         pdu += "\r\n"
+        
+        if self.Content != None:
+            pdu += self.Content
 
         return pdu
 
